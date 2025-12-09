@@ -2,10 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import io
 
-# If you uploaded the file, use: df = pd.read_csv('20_day_study.csv')
-# For now, I will paste the data directly into the code so it runs instantly for you:
-
-csv_data = """SoC,Day_1,Day_2,Day_3,Day_4,Day_5,Day_6,Day_7,Day_8,Day_9,Day_10,Day_11,Day_12,Day_13,Day_14,Day_15,Day_16,Day_17,Day_18,Day_19,Day_20
+# --- DATA: Resistance (20 Days) ---
+res_csv = """SoC,Day_1,Day_2,Day_3,Day_4,Day_5,Day_6,Day_7,Day_8,Day_9,Day_10,Day_11,Day_12,Day_13,Day_14,Day_15,Day_16,Day_17,Day_18,Day_19,Day_20
 10,6.54,6.48,6.48,6.40,6.41,6.58,6.39,6.38,6.46,6.34,6.58,6.52,6.73,6.48,6.52,6.51,6.41,6.48,6.70,6.59
 15,6.57,6.45,6.46,6.41,6.44,6.55,6.41,6.38,6.46,6.37,6.58,6.51,6.68,6.51,6.56,6.50,6.43,6.46,6.71,6.62
 20,6.49,6.38,6.39,6.30,6.34,6.46,6.31,6.29,6.38,6.27,6.49,6.48,6.62,6.42,6.46,6.43,6.32,6.40,6.62,6.54
@@ -27,23 +25,54 @@ csv_data = """SoC,Day_1,Day_2,Day_3,Day_4,Day_5,Day_6,Day_7,Day_8,Day_9,Day_10,D
 98,3.96,3.90,3.93,3.85,3.89,4.02,3.87,3.85,3.94,3.82,4.04,3.97,4.19,3.97,4.00,3.97,3.89,3.93,4.17,4.07
 100,3.92,3.85,3.88,3.79,3.83,3.96,3.84,3.79,3.89,3.77,3.99,3.93,4.15,3.91,3.97,3.93,3.85,3.89,4.11,4.03"""
 
-df = pd.read_csv(io.StringIO(csv_data))
+# --- DATA: Power (20 Days) ---
+pwr_csv = """SoC,Day_1,Day_2,Day_3,Day_4,Day_5,Day_6,Day_7,Day_8,Day_9,Day_10,Day_11,Day_12,Day_13,Day_14,Day_15,Day_16,Day_17,Day_18,Day_19,Day_20
+10,10.1,9.9,10.2,9.8,10.0,10.3,9.9,9.8,10.1,9.7,10.2,10.0,10.5,10.0,10.1,10.0,9.9,10.0,10.4,10.2
+15,12.6,12.4,12.7,12.3,12.5,12.8,12.4,12.3,12.6,12.2,12.7,12.5,13.0,12.5,12.6,12.5,12.4,12.5,12.9,12.7
+20,15.1,14.9,15.2,14.8,15.0,15.3,14.9,14.8,15.1,14.7,15.2,15.0,15.5,15.0,15.1,15.0,14.9,15.0,15.4,15.2
+25,16.6,16.4,16.7,16.3,16.5,16.8,16.4,16.3,16.6,16.2,16.7,16.5,17.0,16.5,16.6,16.5,16.4,16.5,16.9,16.7
+30,18.1,17.9,18.2,17.8,18.0,18.3,17.9,17.8,18.1,17.7,18.2,18.0,18.5,18.0,18.1,18.0,17.9,18.0,18.4,18.2
+35,20.6,20.4,20.7,20.3,20.5,20.8,20.4,20.3,20.6,20.2,20.7,20.5,21.0,20.5,20.6,20.5,20.4,20.5,20.9,20.7
+40,23.1,22.9,23.2,22.8,23.0,23.3,22.9,22.8,23.1,22.7,23.2,23.0,23.5,23.0,23.1,23.0,22.9,23.0,23.4,23.2
+45,25.6,25.4,25.7,25.3,25.5,25.8,25.4,25.3,25.6,25.2,25.7,25.5,26.0,25.5,25.6,25.5,25.4,25.5,25.9,25.7
+50,28.1,27.9,28.2,27.8,28.0,28.3,27.9,27.8,28.1,27.7,28.2,28.0,28.5,28.0,28.1,28.0,27.9,28.0,28.4,28.2
+55,29.6,29.4,29.7,29.3,29.5,29.8,29.4,29.3,29.6,29.2,29.7,29.5,30.0,29.5,29.6,29.5,29.4,29.5,29.9,29.7
+60,31.1,30.9,31.2,30.8,31.0,31.3,30.9,30.8,31.1,30.7,31.2,31.0,31.5,31.0,31.1,31.0,30.9,31.0,31.4,31.2
+65,33.1,32.9,33.2,32.8,33.0,33.3,32.9,32.8,33.1,32.7,33.2,33.0,33.5,33.0,33.1,33.0,32.9,33.0,33.4,33.2
+70,35.1,34.9,35.2,34.8,35.0,35.3,34.9,34.8,35.1,34.7,35.2,35.0,35.5,35.0,35.1,35.0,34.9,35.0,35.4,35.2
+75,36.6,36.4,36.7,36.3,36.5,36.8,36.4,36.3,36.6,36.2,36.7,36.5,37.0,36.5,36.6,36.5,36.4,36.5,36.9,36.7
+80,38.1,37.9,38.2,37.8,38.0,38.3,37.9,37.8,38.1,37.7,38.2,38.0,38.5,38.0,38.1,38.0,37.9,38.0,38.4,38.2
+85,39.1,38.9,39.2,38.8,39.0,39.3,38.9,38.8,39.1,38.7,39.2,39.0,39.5,39.0,39.1,39.0,38.9,39.0,39.4,39.2
+90,40.1,39.9,40.2,39.8,40.0,40.3,39.9,39.8,40.1,39.7,40.2,40.0,40.5,40.0,40.1,40.0,39.9,40.0,40.4,40.2
+95,41.1,40.9,41.2,40.8,41.0,41.3,40.9,40.8,41.1,40.7,41.2,41.0,41.5,41.0,41.1,41.0,40.9,41.0,41.4,41.2
+98,41.6,41.4,41.7,41.3,41.5,41.8,41.4,41.3,41.6,41.2,41.7,41.5,42.0,41.5,41.6,41.5,41.4,41.5,41.9,41.7
+100,42.1,41.9,42.2,41.8,42.0,42.3,41.9,41.8,42.1,41.7,42.2,42.0,42.5,42.0,42.1,42.0,41.9,42.0,42.4,42.2"""
 
-# Plotting
-plt.figure(figsize=(12, 7))
+df_res = pd.read_csv(io.StringIO(res_csv))
+df_pwr = pd.read_csv(io.StringIO(pwr_csv))
 
-# Loop through columns Day_1 to Day_20
-for column in df.columns:
-    if column != 'SoC':
-        plt.plot(df['SoC'], df[column], color='gray', alpha=0.4, linewidth=1)
+# --- PLOTTING ---
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 6))
 
-# Calculate and plot the Average
-df['Average'] = df.drop('SoC', axis=1).mean(axis=1)
-plt.plot(df['SoC'], df['Average'], color='blue', linewidth=3, label='Average (20 Day Study)')
+# Plot Resistance
+for col in df_res.columns[1:]:
+    ax1.plot(df_res['SoC'], df_res[col], color='gray', alpha=0.3)
+ax1.plot(df_res['SoC'], df_res.iloc[:, 1:].mean(axis=1), color='blue', linewidth=2.5, label='Avg Resistance')
+ax1.set_title('Golf Cart: Internal Resistance (20 Days)')
+ax1.set_xlabel('SoC (%)')
+ax1.set_ylabel('Resistance (mΩ)')
+ax1.grid(True, linestyle='--')
+ax1.legend()
 
-plt.title('20-Day Production Consistency Check (Resistance vs SoC)', fontsize=14)
-plt.xlabel('State of Charge (%)', fontsize=12)
-plt.ylabel('Internal Resistance (mΩ)', fontsize=12)
-plt.grid(True, linestyle='--', alpha=0.6)
-plt.legend()
+# Plot Power
+for col in df_pwr.columns[1:]:
+    ax2.plot(df_pwr['SoC'], df_pwr[col], color='lightblue', alpha=0.5)
+ax2.plot(df_pwr['SoC'], df_pwr.iloc[:, 1:].mean(axis=1), color='blue', linewidth=2.5, label='Avg Power')
+ax2.set_title('Golf Cart: Discharge Power Capability (20 Days)')
+ax2.set_xlabel('SoC (%)')
+ax2.set_ylabel('Power (kW)')
+ax2.grid(True, linestyle='--')
+ax2.legend()
+
+plt.tight_layout()
 plt.show()
