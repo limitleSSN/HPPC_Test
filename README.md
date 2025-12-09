@@ -56,7 +56,7 @@ This repository contains the analysis scripts and data processing logic for **Hy
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/yourusername/HPPC-Battery-Analysis.git](https://github.com/yourusername/HPPC-Battery-Analysis.git)
+    git clone [https://github.com/yourusername/HPPC-Battery-Analysis.git](https://github.com/yourusername/HPPC-Test.git)
     ```
 
 2.  **Install dependencies:**
