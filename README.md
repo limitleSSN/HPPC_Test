@@ -1,70 +1,80 @@
-# 🔋 HPPC Battery Analysis Project
+# 🔋 HPPC Battery Analysis: Golf Cart vs. E-Scooter
 
-### 📌 What is this project?
-This project analyzes the performance of two different electric vehicle batteries using the **Hybrid Pulse Power Characterization (HPPC)** test. 
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python&logoColor=white)
+![Data Analysis](https://img.shields.io/badge/Data_Analysis-Pandas_Matplotlib-orange?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
 
-I performed the test on a commercial battery test machine, exported the raw data, and used **Python** to visualize and compare how these batteries behave under stress.
+## 📌 Project Overview
+**Timeline:** May 2025 – July 2025  
+**Context:** EV Battery Performance Benchmarking
 
----
+This repository contains the analysis scripts and data processing logic for **Hybrid Pulse Power Characterization (HPPC)** tests performed on two commercial electric vehicle battery packs. The project evaluates the **Internal Resistance ($R_{in}$)** and **Power Capability** of Li-ion NMC (Golf Cart) vs. LiFePO4 (E-Scooter) chemistries.
 
-### ❓ What is an HPPC Test?
-**HPPC (Hybrid Pulse Power Characterization)** is a standard test used to measure a battery's power capability.
-
-Think of it like a stress test for a battery:
-1. We discharge the battery to a specific level (like 80% or 50% charge).
-2. We hit it with a **sudden burst of current** (a discharge pulse) for 10 seconds.
-3. We let it rest.
-4. We hit it with a **charging burst** (a regeneration pulse).
-
-**Why do we do this?**
-It helps us calculate the **Internal Resistance**. A good battery has low resistance and doesn't lose much voltage when you accelerate hard.
+### 🎯 Key Objectives
+* **Compare Chemistries:** Analyze how NMC and LFP batteries differ in voltage sag and power delivery.
+* **Resistance Mapping:** Calculate internal resistance across the State-of-Charge (SoC) range (10% - 100%).
+* **Power Capability:** Determine the maximum discharge and charge power limits for BMS calibration.
 
 ---
 
-### 🔋 Battery Ratings Used
+## 📂 Repository Structure
 
-I tested two different battery packs commonly used in EVs:
+| File Name | Description |
+| :--- | :--- |
+| **`Golf-cart.py`** | Analysis script for the **48V NMC Golf Cart Battery**. Processes raw pulse data to extract resistance and power curves. |
+| **`E-Bike.py`** | Analysis script for the **60V LFP Scooter/E-Bike Battery**. Handles the flatter voltage curve characteristics of LFP chemistry. |
+| **`Randomday-testplot`** | A plotting utility to visualize a random day's dataset from the 33-day production consistency study. useful for spot-checking data quality. |
+| **`README.md`** | Project documentation (this file). |
 
-| Spec | **Battery A (E-Golf Cart)** | **Battery B (2-Wheeler/Scooter)** |
+---
+
+## 🔋 Battery Specifications
+
+| Feature | **System A: Golf Cart** | **System B: E-Scooter** |
 | :--- | :--- | :--- |
-| **Chemistry** | Li-ion NMC | LiFePO4 (LFP) |
-| **Voltage** | 48V | 60V |
+| **Chemistry** | **Li-ion NMC** | **LiFePO4 (LFP)** |
+| **Nominal Voltage** | 48V | 60V |
 | **Capacity** | 100 Ah | 30 Ah |
-| **Pulse Current** | 80 Amps | 30 Amps |
-| **Readings Taken** | 20 Data Points | 33 Data Points |
+| **Test Pulse** | 80 A (10s) | 30 A (10s) |
+| **Key Finding** | Higher peak power, but higher voltage sag. | Very stable voltage, lower peak power. |
 
 ---
 
-### ⚙️ How the Data Was Collected
+## 📊 Results Summary
 
-1. **The Machine:** I used a programmable Battery Cycle Tester (cycler).
-2. **The Process:** I programmed the machine to run the HPPC profile automatically. It monitored Voltage, Current, and Temperature every second.
-3. **The Export:** After the test finished, the machine software exported the logs as **.CSV (Excel)** files.
+### 1. Resistance vs. SoC
+* **Golf Cart (NMC):** Resistance drops significantly as the battery charges (from **6.5 mΩ** at 10% SoC to **3.8 mΩ** at 100% SoC).
+* **Scooter (LFP):** Resistance remains relatively flat (~50 mΩ) across the middle SoC range (20-80%), typical of LFP stability.
 
-**Raw Data Format:**
-The machine gave me columns like:
-`Timestamp` | `Voltage (V)` | `Current (A)` | `Temperature (C)` | `Step Time`
-
----
-
-### 🐍 Python Analysis & Plotting
-
-Since the raw data files are large and hard to read manually, I wrote **Python scripts** to process them.
-
-**What the scripts do:**
-1. Load the `.csv` files.
-2. Filter the specific pulse regions (the 10-second bursts).
-3. Plot graphs to compare the **Voltage Sag** (drop) between the Golf Cart and the Scooter battery.
-
-**Files included in this repo:**
-* `data/golf_cart.csv` (Contains 20 key readings)
-* `data/scooter.csv` (Contains 33 key readings)
-* `plot_results.py` (The script to generate the graphs)
+### 2. Power Capability
+* **Discharge Power:** The Golf Cart pack demonstrated a peak discharge capability of **42 kW**, whereas the smaller Scooter pack peaked at **3.0 kW**.
+* **Regen (Charge) Limits:** The data helps define safe regenerative braking limits to prevent plating.
 
 ---
 
-### 🚀 How to Run
-1. Download this repository.
-2. Make sure you have Python installed with pandas and matplotlib:
-   ```bash
-   pip install pandas matplotlib
+## 🚀 How to Run
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/yourusername/HPPC-Battery-Analysis.git](https://github.com/yourusername/HPPC-Battery-Analysis.git)
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    pip install pandas matplotlib
+    ```
+
+3.  **Run the analysis:**
+    * To analyze the Golf Cart data:
+        ```bash
+        python Golf-cart.py
+        ```
+    * To analyze the E-Scooter data:
+        ```bash
+        python E-Bike.py
+        ```
+
+---
+
+## 📜 License
+This project is open-source and available under the MIT License.
